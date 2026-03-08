@@ -1,0 +1,123 @@
+Database selection -> Postgres db ->
+- We have structured, relational and constraint heavy data 
+Hence we need a relational db.
+- PostgreSQL handles complex, heavy read/write workloads and analytics better.
+
+ORM -> A translation layer between Python and SQL.
+ORM -> why sqlAlchemy?
+- Industry standard
+- FastAPI integrates well with it
+- Very stable ecosystem
+
+Controllers → Services → ORM layer → DB
+
+Database.py ->
+Engine -> Connection factory.Main interface between Python and the database.Manages a pool of reusable DB connections
+Creates connections when needed
+Reuses them efficiently.
+Session -> The transaction context. A conversation with the database.
+Everything inside a session:
+Is part of a transaction
+Either commits fully
+Or rolls back fully
+Base -> The model registry. The metadata holder for all tables.
+
+models.py -> Models represent database tables as Python classes. 
+-> Database structure
+
+Alembic ->  is a database migration tool for SQLAlchemy.
+It tracks schema changes over time.
+
+Pydantic -> Data validation and parsing. Validates data before it reaches the database.
+-> API data validation
+In FastAPI, Pydantic models define request and response schemas.
+A schema is a structured definition of how data should look — basically the blueprint or rules for data.
+It defines things like:
+What fields exist
+What type each field is (string, integer, etc.)
+Which fields are required
+How different pieces of data are related
+Think of a schema like a template or contract for data 📄.
+
+Real flow of an API -> 
+
+Client Request
+     ↓
+Pydantic Schema (validation)
+     ↓
+Service Logic
+     ↓
+SQLAlchemy Model
+     ↓
+Database
+
+Register User Flow ->
+Client (frontend / Postman)
+        │
+        ▼
+POST /auth/register
+        │
+        ▼
+Route receives request
+        │
+        ▼
+Pydantic schema validates input
+        │
+        ▼
+Check if user already exists
+        │
+        ▼
+Hash password
+        │
+        ▼
+Create user in DB
+        │
+        ▼
+Return safe response
+
+Controller  ->
+The controller handles HTTP requests and responses.
+Responsibilities:
+Define API endpoints
+Accept request data
+Call the service layer
+Return the response
+
+Service ->
+Implement application rules
+Process data
+Perform transformations
+Call repository functions
+
+Repository ->
+CRUD operations
+Database queries
+Interaction with ORM
+
+When implementing a feature, always move through this pipeline: ->
+Schema → Route → Service/CRUD → Model → Database
+
+JWT = JSON Web Token -> 
+It is a secure token that proves the user is authenticated
+It has 3 parts: HEADER, PAYLOAD, SIGNATURE
+the JWT is send back in the login response.
+The client (frontend / Postman / mobile app) now stores this token.
+Client Uses Token for Future Requests.The client must include the token in every request.
+What the dserver does with this token : 
+Client Request
+     │
+     ▼
+Server receives request
+     │
+Extract JWT from header
+     │
+Verify token signature
+     │
+Check expiration
+     │
+Extract user_id
+     │
+Load user from DB
+     │
+Allow access
+
