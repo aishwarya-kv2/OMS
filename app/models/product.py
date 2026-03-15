@@ -13,9 +13,13 @@
 #     # 1 product -> many orderItem
 #     order_items = Relationship("OrderItem", back_populates="product")
 
-from sqlalchemy import Column, Integer, String
+from datetime import datetime
+
+from sqlalchemy import Column, DateTime, Integer, String
 from sqlalchemy.orm import relationship
+
 from app.db.database import Base
+
 
 class Product(Base):
     __tablename__ = "products"
@@ -24,5 +28,7 @@ class Product(Base):
     name = Column(String, nullable=False)
     price = Column(Integer, nullable=False)
     stock = Column(Integer, default=1)
+    updated_at = Column(DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
+    deleted_at = Column(DateTime, nullable=True)
 
     order_items = relationship("OrderItem", back_populates="product")
