@@ -6,12 +6,14 @@ import app.models  # noqa: F401 - register all models for SQLAlchemy relationshi
 from app.routes.health import router as health_router
 from app.routes.auth import router as auth_router
 from app.routes.orders import router as order_router
+from app.routes.products import router as product_router
 
 app = FastAPI()
 
 app.include_router(health_router)
 app.include_router(auth_router, prefix="/users")
-app.include_router(order_router, prefix="/orders")
+app.include_router(order_router)
+app.include_router(product_router)
 
 if __name__ == "__main__":
     uvicorn.run("app.main:app", host="0.0.0.0",
