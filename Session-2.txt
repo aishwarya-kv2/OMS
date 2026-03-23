@@ -121,3 +121,6 @@ Load user from DB
      │
 Allow access
 
+
+Depends() is just a way to tell FastAPI:
+Run this first and give me its result

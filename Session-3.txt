@@ -1,0 +1,24 @@
+Middleware ->
+Middleware is a function that runs between the request and the route handler.
+Client Request → Middleware → Route Controller → Response
+Middleware is usually used for things like:
+Authentication
+Logging
+Validation
+Error handling
+
+JWT Middleware checks whether the request contains a valid JWT token, because some routes
+should only be accessible to logged-in users.
+So before the request reaches the route, the middleware:
+- Reads the Authorization header
+- Extracts the JWT token
+- Verifies the token
+- Allows or blocks the request
+
+security = HTTPBearer() ->
+This is a security object that FastAPI uses to validate the JWT token.
+What it does:
+Reads Authorization header
+Ensures it’s Bearer <token>
+Extracts the token
+So, credentials.credentials gives you the token

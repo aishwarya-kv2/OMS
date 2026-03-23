@@ -15,7 +15,7 @@ class AuthService:
 
     def __init__(
         self,
-        *,
+        *, #The lone * in the parameter list means everything after it is keyword-only.
         pwd_context: CryptContext | None = None,
         secret: str | None = None,
         algorithm: str | None = None,
