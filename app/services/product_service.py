@@ -27,6 +27,9 @@ class ProductService:
         """
         return self._product_crud.get_all_products(db)
 
+    def get_product_by_id(self, db: Session, product_id: int):
+        return self._product_crud.get_product_by_id(db, product_id)
+
 
 # Default instance for production; tests may construct ``ProductService(...)`` instead.
 product_service = ProductService()
