@@ -61,5 +61,13 @@ class OrderService:
         db.refresh(order)
         return order
 
+    def get_order_by_id(self, db: Session, order_id: int, user_id: int):
+        order = self._order_crud.get_order_by_id(db, order_id, user_id)
+
+        if not order:
+            raise HTTPException(status_code=404, detail="Order not found")
+
+        return order
+
 
 order_service = OrderService()

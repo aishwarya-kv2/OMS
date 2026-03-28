@@ -25,3 +25,12 @@ def create_order(
     db: Session = Depends(get_db),
 ):
     return order_service.create_order(db, user["user_id"], items=order.items)
+
+
+@router.get("/orders/{order_id}")
+def get_order_by_id(
+    order_id: int,
+    user=Depends(get_current_user),
+    db: Session = Depends(get_db),
+):
+    return order_service.get_order_by_id(db, order_id, user["user_id"])
