@@ -1,4 +1,4 @@
-from pydantic import BaseModel, ConfigDict, Field
+from pydantic import BaseModel, ConfigDict, Field, model_validator
 
 
 class UserCreate(BaseModel):
@@ -27,10 +27,20 @@ class TokenResponse(BaseModel):
 
 
 class UserDetails(BaseModel):
-    """Partial update for the current user (PATCH). Omit fields you do not want to change."""
+    """Partial update for the current user (PATCH). Send at least one field with a value."""
 
-    name: str | None = Field(default=None, min_length=1)
-    address: str | None = None
+    model_config = ConfigDict(extra="forbid")
+
+    name: str | None = Field(
+        default=None,
+        min_length=1,
+        description="New display name (omit if unchanged).",
+    )
+    address: str | None = Field(
+        default=None,
+        min_length=1,
+        description="New address (omit if unchanged).",
+    )
 
 
 class MessageResponse(BaseModel):

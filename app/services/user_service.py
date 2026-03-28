@@ -19,11 +19,6 @@ class UserService:
             raise HTTPException(status_code=404, detail="User not found")
         raw = details.model_dump(exclude_unset=True)
         updates = {k: v for k, v in raw.items() if v is not None}
-        if not updates:
-            raise HTTPException(
-                status_code=400,
-                detail="No fields to update; send at least one of: name, address.",
-            )
         return self._user_crud.edit_current_user_details(db, user, updates)
 
 
