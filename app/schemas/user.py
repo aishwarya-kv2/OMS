@@ -42,6 +42,5 @@ class UserDetails(BaseModel):
         description="New address (omit if unchanged).",
     )
 
-
 class MessageResponse(BaseModel):
     message: str
